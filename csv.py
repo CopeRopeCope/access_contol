@@ -1,11 +1,12 @@
 
 import xlrd
+
 def get_table(file_path):
     #file_path = "Swipe Records-2020-08-11_164350_68.xls"
     sheet = "ExelData"
     xl_workbook  = xlrd.open_workbook(file_path)
     xl_sheet = xl_workbook.sheet_by_index(0)
-    print ('Sheet name: %s' % xl_sheet.name)
+    #print ('Sheet name: %s' % xl_sheet.name)
 
     # Pull the first row by index
     #  (rows/columns are also zero-indexed)
@@ -42,15 +43,35 @@ def get_table(file_path):
     
     return table
 
-
-
+def get_work_hours(table):
+    import datetime
+    time = {}
+    for key, value in table.items():
+            if 'DateTime' in value['DateTime']:
+                pass
+            else:
+                time[key] = datetime.datetime.strptime(str(value['DateTime']), '%Y-%m-%d %H:%M:%S %A')
+    #for key, value in time.items():
+    #    if value == max(time):   
+    #        print (key)
+    first_date = min(time)
+    last_date = max(time)
+    
+    #first_time = datetime.datetime.str
 
 
 def main():
     file_path = "Swipe Records-2020-08-11_164350_68.xls"
     table = get_table(file_path)
-    for key, value in table.items():
-            print (key, value)
+    work_hours = get_work_hours(table)
+    #for key, value in table.items():
+    #       print (key, value)
+    #import datetime
+    #date = '2020-08-07 11:19:02 Friday'
+    #time = datetime.datetime.strptime(date, '%Y-%m-%d %H:%M:%S %A')
+    #print (time)
+
+
 
 if __name__ == "__main__":
     main()        
